@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a202c">
+    <meta name="description" content="Previsão climática e alertas para agricultores">
+    <link rel="manifest" href="manifest.json">
+    <title>Nimbus Forecast</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('Service Worker registrado'))
+                .catch(err => console.error('Erro ao registrar Service Worker:', err));
+        }
+        if ('Notification' in window && navigator.serviceWorker) {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') console.log('Notificações permitidas');
+            });
+        }
+    </script>
+</head>
+<body class="dark-mode">
+    <div class="dashboard relative">
+        <div id="loading-spinner" class="hidden absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+        </div>
+        <div class="header">
+            <h1>Nimbus Forecast</h1>
+            <button id="theme-toggle" aria-label="Alternar modo claro/escuro">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+        <div class="language-selector mb-4">
+            <select id="lang-select" class="p-2 border rounded bg-gray-800 text-white">
+                <option value="pt">Português</option>
+                <option value="ch">Changana</option>
+                <option value="se">Sena</option>
+            </select>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="city-input" placeholder="Digite a cidade..." aria-label="Buscar cidade">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        <div id="error-message" class="hidden text-red-500 mb-4 text-center"></div>
+        <div class="current-weather">
+            <div class="temp" id="temp">19°C</div>
+            <div class="icon"><i class="fas fa-cloud-moon"></i></div>
+            <div class="location" id="location">Localização Atual: Lisboa, Portugal</div>
+        </div>
+        <div class="weekly-outlook">
+            <h2 id="weekly-title">Previsão Semanal</h2>
+            <div id="days-grid" class="days-grid"></div>
+        </div>
+        <div class="hourly-graph">
+            <canvas id="forecastChart"></canvas>
+        </div>
+        <div class="metrics">
+            <div class="metric">
+                <i class="fas fa-tint metric-icon text-blue-400"></i>
+                <div id="humidity-label">Umidade</div>
+                <span id="humidity">60%</span>
+            </div>
+            <div class="metric">
+                <i class="fas fa-wind metric-icon text-gray-400"></i>
+                <div id="wind-label">Vento</div>
+                <span id="wind">12 km/h</span>
+            </div>
+            <div class="metric">
+                <i class="fas fa-cloud-rain metric-icon text-blue-500"></i>
+                <div id="rainChance-label">Poss. de Chuva</div>
+                <span id="rainChance">0%</span>
+            </div>
+            <div class="metric">
+                <i class="fas fa-sun metric-icon text-yellow-400"></i>
+                <div id="uv-label">Índice UV</div>
+                <span id="uv">4 Moderado</span>
+            </div>
+            <div class="metric">
+                <i class="fas fa-compress-arrows-alt metric-icon text-purple-400"></i>
+                <div id="pressure-label">Pressão</div>
+                <span id="pressure">1013 hPa</span>
+            </div>
+            <div class="metric">
+                <i class="fas fa-smog metric-icon text-green-400"></i>
+                <div id="aqi-label">Qualidade Ar</div>
+                <span id="aqi">Good</span>
+                <span id="data-reliability" class="text-xs text-gray-400 mt-1"></span>
+            </div>
+        </div>
+        <div class="sensors-panel">
+            <h2 id="sensors-title">Rede de Sensores</h2>
+            <div id="sensors-grid" class="grid grid-cols-1 gap-4"></div>
+        </div>
+        <div class="map-panel">
+            <h2 id="map-title">Mapa de Condições</h2>
+            <div id="weather-map" class="h-64"></div>
+        </div>
+        <div class="sms-config mt-4">
+            <h2 id="sms-title">Configurar Alertas SMS</h2>
+            <input type="text" id="sms-number" placeholder="Digite o número de telefone" class="p-2 border rounded w-full mb-2">
+            <button id="sms-save" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Salvar Número</button>
+        </div>
+        <div class="crop-tips mt-4">
+            <h2 id="crop-title">Dicas para Culturas</h2>
+            <select id="crop-select" class="p-2 border rounded w-full mb-2">
+                <option value="">Selecione uma cultura</option>
+                <option value="milho">Milho</option>
+                <option value="mandioca">Mandioca</option>
+                <option value="arroz">Arroz</option>
+            </select>
+            <div id="crop-tips" class="metric bg-gray-800 p-4 rounded text-sm italic text-gray-200"></div>
+        </div>
+        <div class="alerts mt-4">
+            <h2 id="alerts-title">Alertas de Clima Extremo</h2>
+            <button id="open-alerts" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Ver Alertas</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

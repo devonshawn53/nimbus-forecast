@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas Climáticos - Nimbus Forecast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e9ecef;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section {
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        .alerts {
+            background-color: #e6f0fa;
+        }
+        .sensors {
+            background-color: #e8f5e9;
+        }
+        h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .alert-item, .sensor-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+        .alert-item i, .sensor-item i {
+            margin-right: 10px;
+            font-size: 18px;
+            vertical-align: middle;
+            color: #e74c3c;
+        }
+        .sensor-item i {
+            color: #27ae60;
+        }
+        .no-connection {
+            background-color: #ffebee;
+            color: #c0392b;
+            font-weight: bold;
+            text-align: center;
+        }
+        #update-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #update-btn:hover {
+            background: #2980b9;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .section {
+                margin-bottom: 20px;
+            }
+            .alert-item, .sensor-item {
+                font-size: 14px;
+                word-wrap: break-word;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section alerts">
+            <h2>Alertas de Eventos Extremos</h2>
+            <div id="alerts-list"></div>
+        </div>
+        <div class="section sensors">
+            <h2>Leituras dos Sensores</h2>
+            <div id="sensors-list"></div>
+        </div>
+    </div>
+    <script src="script_alerts.js"></script>
+</body>
+</html>
