@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateFromESP32, 300000); // Atualiza a cada 5 minutos
     updateFromESP32(); // Atualiza agora
 
-    const apiKey = 'sua-chave-openweathermap'; // Obtida em openweathermap.org
+    const apiKey = 'ca50095dd2e55f8a7fff4b1c5db19763'; // Obtida em openweathermap.org
     const searchBtn = document.getElementById('search-btn');
     searchBtn.addEventListener('click', () => {
         const city = document.getElementById('city-input').value || 'Maputo';
