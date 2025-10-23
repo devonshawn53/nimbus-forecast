@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         databaseURL: "https://nimbus-ec47d-default-rtdb.firebaseio.com",
         projectId: "nimbus-ec47d",
         storageBucket: "nimbus-ec47d.appspot.com",
-        messagingSenderId: "seu-sender-id", // Substitua se necessário
-        appId: "seu-app-id" // Substitua se necessário
+        messagingSenderId: "seu-sender-id", // Pegue no Firebase Console
+        appId: "seu-app-id" // Pegue no Firebase Console
     });
     const database = firebase.database();
 
