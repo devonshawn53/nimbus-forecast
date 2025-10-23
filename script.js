@@ -29,14 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
             : '<i class="fas fa-sun"></i>';
     });
 
+    // Configuração do Firebase (suas chaves)
     firebase.initializeApp({
-        apiKey: "xMjsSsHFhj1A7kPkcxUcRRhqbPlTS1nXaIJyUd6r", // Do Firebase
-        authDomain: "nimbusforecast.firebaseapp.com",
+        apiKey: "xMjsSsHFhj1A7kPkcxUcRRhqbPlTS1nXaIJyUd6r",
+        authDomain: "nimbus-ec47d.firebaseapp.com",
         databaseURL: "https://nimbus-ec47d-default-rtdb.firebaseio.com",
-        projectId: "nimbusforecast",
-        storageBucket: "nimbusforecast.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "1:123456789:web:abcdef123456"
+        projectId: "nimbus-ec47d",
+        storageBucket: "nimbus-ec47d.appspot.com",
+        messagingSenderId: "seu-sender-id", // Substitua se necessário
+        appId: "seu-app-id" // Substitua se necessário
     });
     const database = firebase.database();
 
@@ -54,9 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setInterval(updateFromESP32, 300000); // Atualiza a cada 5 minutos
-    updateFromESP32(); // Atualiza agora
+    updateFromESP32();
 
-    const apiKey = 'ca50095dd2e55f8a7fff4b1c5db19763'; // Obtida em openweathermap.org
+    const apiKey = 'ca50095dd2e55f8a7fff4b1c5db19763'; // Sua chave OpenWeatherMap
     const searchBtn = document.getElementById('search-btn');
     searchBtn.addEventListener('click', () => {
         const city = document.getElementById('city-input').value || 'Maputo';
