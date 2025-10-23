@@ -1,6 +1,6 @@
 // === CONFIGURAÇÃO DO FIREBASE - ADICIONE ESTA PARTE NO INÍCIO ===
 const firebaseConfig = {
-    apiKey: "xMjsSsHFhj1A7kPkcxUcRRhqbPlTS1nXaIJyUd6r",
+    apiKey: "AIzaSyCaquhKbCX6GhkbvRMn3eux2VyCqvOgXR0",
     databaseURL: "https://nimbus-ec47d-default-rtdb.firebaseio.com"
 };
 
