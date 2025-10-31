@@ -56,9 +56,9 @@
         </div>
         <div id="error-message" class="hidden text-red-500 mb-4 text-center"></div>
         <div class="current-weather">
-            <div class="temp" id="temp">19°C</div>
+            <div class="temp" id="temp">--°C</div>
             <div class="icon"><i class="fas fa-cloud-moon"></i></div>
-            <div class="location" id="location">Localização Atual: Lisboa, Portugal</div>
+            <div class="location" id="location">Localização Atual: Carregando...</div>
         </div>
         <div class="weekly-outlook">
             <h2 id="weekly-title">Previsão Semanal</h2>
@@ -71,51 +71,103 @@
             <div class="metric">
                 <i class="fas fa-tint metric-icon text-blue-400"></i>
                 <div id="humidity-label">Umidade</div>
-                <span id="humidity">60%</span>
+                <span id="humidity">--%</span>
             </div>
             <div class="metric">
                 <i class="fas fa-wind metric-icon text-gray-400"></i>
                 <div id="wind-label">Vento</div>
-                <span id="wind">12 km/h</span>
+                <span id="wind">-- km/h</span>
             </div>
             <div class="metric">
                 <i class="fas fa-cloud-rain metric-icon text-blue-500"></i>
                 <div id="rainChance-label">Poss. de Chuva</div>
-                <span id="rainChance">0%</span>
+                <span id="rainChance">--%</span>
             </div>
             <div class="metric">
                 <i class="fas fa-sun metric-icon text-yellow-400"></i>
                 <div id="uv-label">Índice UV</div>
-                <span id="uv">4 Moderado</span>
+                <span id="uv">--</span>
             </div>
             <div class="metric">
                 <i class="fas fa-compress-arrows-alt metric-icon text-purple-400"></i>
                 <div id="pressure-label">Pressão</div>
-                <span id="pressure">1013 hPa</span>
+                <span id="pressure">-- hPa</span>
             </div>
             <div class="metric">
                 <i class="fas fa-smog metric-icon text-green-400"></i>
                 <div id="aqi-label">Qualidade Ar</div>
-                <span id="aqi">Good</span>
+                <span id="aqi">--</span>
                 <span id="data-reliability" class="text-xs text-gray-400 mt-1"></span>
             </div>
         </div>
-        <div class="sensors-panel">
-            <h2 id="sensors-title">Rede de Sensores</h2>
-            <div id="sensors-grid" class="grid grid-cols-1 gap-4"></div>
+
+        <!-- NOVA SEÇÃO: ESTAÇÃO CLIMÁTICA EM TEMPO REAL -->
+        <div class="sensors-panel mt-6">
+            <h2 id="sensors-title">🏭 Estação Climática em Tempo Real</h2>
+            <div id="estacao-climatica" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-700 p-4 rounded-lg text-white">
+                    <i class="fas fa-thermometer-half text-2xl mb-2"></i>
+                    <div class="text-sm">Temperatura</div>
+                    <div class="text-2xl font-bold" id="temp-estacao">--°C</div>
+                </div>
+                <div class="bg-gradient-to-r from-green-500 to-green-700 p-4 rounded-lg text-white">
+                    <i class="fas fa-tint text-2xl mb-2"></i>
+                    <div class="text-sm">Umidade do Ar</div>
+                    <div class="text-2xl font-bold" id="umidade-estacao">--%</div>
+                </div>
+                <div class="bg-gradient-to-r from-yellow-500 to-yellow-700 p-4 rounded-lg text-white">
+                    <i class="fas fa-seedling text-2xl mb-2"></i>
+                    <div class="text-sm">Umidade do Solo</div>
+                    <div class="text-2xl font-bold" id="solo-estacao">--%</div>
+                </div>
+            </div>
+            <div id="status-sms" class="mt-2 text-center text-sm text-green-400 hidden">
+                <i class="fas fa-sms"></i> Alertas SMS Ativos
+            </div>
         </div>
-        <div class="map-panel">
+
+        <!-- SEÇÃO SMS ATUALIZADA -->
+        <div class="sms-config mt-6">
+            <h2 id="sms-title">📱 Sistema de Alertas SMS</h2>
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <p class="text-gray-300 mb-3">Envie alertas climáticos para quem não tem internet</p>
+                
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-400 mb-1">Adicionar Número (formato: +258XXXXXXXXX)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="novo-numero" placeholder="+258868142478" 
+                               class="flex-1 p-2 border border-gray-600 rounded bg-gray-700 text-white">
+                        <button id="adicionar-numero" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold mb-2">Números Cadastrados</h3>
+                    <div id="lista-numeros" class="space-y-2">
+                        <!-- Lista de números aparecerá aqui -->
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-blue-900 rounded">
+                    <h4 class="font-semibold mb-1">📊 Estatísticas SMS</h4>
+                    <div class="text-sm text-gray-300">
+                        <div>Próximo envio automático: <span id="proximo-sms">--:--</span></div>
+                        <div>Total de números: <span id="total-numeros">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-panel mt-4">
             <h2 id="map-title">Mapa de Condições</h2>
             <div id="weather-map" class="h-64"></div>
         </div>
-        <div class="sms-config mt-4">
-            <h2 id="sms-title">Configurar Alertas SMS</h2>
-            <input type="text" id="sms-number" placeholder="Digite o número de telefone" class="p-2 border rounded w-full mb-2">
-            <button id="sms-save" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Salvar Número</button>
-        </div>
+
         <div class="crop-tips mt-4">
             <h2 id="crop-title">Dicas para Culturas</h2>
-            <select id="crop-select" class="p-2 border rounded w-full mb-2">
+            <select id="crop-select" class="p-2 border rounded w-full mb-2 bg-gray-800 text-white">
                 <option value="">Selecione uma cultura</option>
                 <option value="milho">Milho</option>
                 <option value="mandioca">Mandioca</option>
@@ -123,9 +175,12 @@
             </select>
             <div id="crop-tips" class="metric bg-gray-800 p-4 rounded text-sm italic text-gray-200"></div>
         </div>
+
         <div class="alerts mt-4">
             <h2 id="alerts-title">Alertas de Clima Extremo</h2>
-            <button id="open-alerts" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Ver Alertas</button>
+            <button id="open-alerts" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                <i class="fas fa-bell"></i> Ver Alertas
+            </button>
         </div>
     </div>
     <script src="script.js"></script>
